@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>お問い合わせ</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<style>
+.message_info{ background:deepskyblue; }
+.message_error{ background:crimson; }
+.message_success{ background:forestgreen; }
+
+
+</style>
+
+
+</head>
+<body>
+
+    <!--↓追加-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% for message in messages %}
+    <div class="message_{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+
+
+
+
+
+    <p>あなたのIPアドレスは {{ ip }} です。</p>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input class="form-control" type="text" name="subject" placeholder="件名">
+        <input class="form-control" type="email" name="email" value="{{ email }}">
+        <textarea class="form-control" name="content" placeholder="お問い合わせ内容"></textarea>
+        <input class="form-control" type="submit" value="送信">
+    </form>
+
+
+</body>
+</html>
+

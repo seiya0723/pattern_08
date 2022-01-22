@@ -1,0 +1,146 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+
+{% block extra_head %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="{% static 'shop/js/script.js' %}"></script>
+<script src="{% static 'shop/js/ajax.js' %}"></script>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+{% endblock %}
+
+
+{% block main_area %}
+<main class="container">
+
+    <i class="fab fa-angrycreative" style="font-size:10rem;color:orange;"></i>
+    
+    {% comment %}
+    <form id="pattern_form" action="" method="POST">
+        {% csrf_token %}
+
+        <div class="row my-4">
+            <div class="col-sm-6">
+                <div>コントローラ</div>
+
+                <div id="init_control" class="control">
+                    <div>色: <input class="color" type="color" name="color"></div>
+                    <div>本数: <input class="number" type="range" name="number" min="1" max="10" step="1" value="1">
+                               <input class="number" type="number" min="1" max="10" step="1" value="1"></div>
+                    <input class="btn btn-danger control_delete" type="button" value="削除">
+                </div>
+
+                <div id="control_area"></div>
+
+                <div>糸の太さ: <input class="size" type="range" name="size" min="1" max="10" step="1" value="1">
+                               <input class="size" type="number" min="1" max="10" step="1" value="1"></div>
+                <div>方向: <input id="direction" class="direction_chk" type="checkbox"><label class="direction_label" for="direction"></label></div>
+
+                <input id="control_add" class="btn btn-success" type="button" value="追加">
+
+            </div>
+            <div class="col-sm-6">
+                <div>プレビュー</div>
+                <canvas id="canvas" width="300" height="300" style="border:solid 1px black;"></canvas>
+            </div>
+        </div>
+
+        <input class="form-control" type="text" name="title" placeholder="模様のタイトルを指定してください">
+
+        <!--TODO:ここはtype="submit"にすると普通のフォーム送信が始まる。Ajaxで送信する為にtype="button"にする。-->
+        <input id="pattern_submit" type="button" value="送信"> 
+    </form>
+    {% endcomment %}
+
+    <a class="btn btn-outline-success" href="{% url 'shop:pattern_mod' %}">模様新規作成</a>
+
+
+    {% for pattern in patterns %}
+    <div class="border">
+        <div><a href="{% url 'shop:pattern_mod_single' pattern.id %}">{{ pattern.title }}</a></div>
+        <img src="{{ pattern.img.url }}" alt="画像">
+    </div>
+    {% endfor %}
+
+</main>
+{% endblock %}
+
+
+{% comment %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ショップ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+
+    <!--jQueryと模様を作るJavaScriptの読み込み-->
+    <!--
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="{% static 'shop/js/script.js' %}"></script>
+    -->
+
+</head>
+<body>
+
+    <main class="container">
+
+        <div class="row my-4">
+
+            <div class="col-sm-6">
+                <div>コントローラ</div>
+
+
+                <div id="init_control" class="control">
+                    <div>色: <input class="color" type="color" name="color"></div>
+                    <div>本数: <input class="number" type="range" name="number" min="1" max="10" step="1" value="1">
+                               <input class="number" type="number" min="1" max="10" step="1" value="1"></div>
+                    <input class="btn btn-danger control_delete" type="button" value="削除">
+                </div>
+
+                <div id="control_area"></div>
+
+                <div>糸の太さ: <input class="size" type="range" name="size" min="1" max="10" step="1" value="1">
+                               <input class="size" type="number" min="1" max="10" step="1" value="1"></div>
+                <div>方向: <input id="direction" class="direction_chk" type="checkbox"><label class="direction_label" for="direction"></label></div>
+
+                <input id="control_add" class="btn btn-success" type="button" value="追加">
+
+            </div>
+            <div class="col-sm-6">
+                <div>プレビュー</div>
+                <canvas id="canvas" width="300" height="300" style="border:solid 1px black;"></canvas>
+            </div>
+
+        </div>
+
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="img">
+            <input type="text" name="title">
+            <input type="submit" value="送信">
+        </form>
+
+        {% for pattern in patterns %}
+        <div class="border">
+            {{ pattern.title }}
+            <img src="{{ pattern.img.url }}" alt="画像">
+        </div>
+        {% endfor %}
+
+    </main>
+
+
+
+
+
+
+</body>
+</html>
+{% endcomment %}

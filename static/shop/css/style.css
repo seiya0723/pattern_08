@@ -1,0 +1,56 @@
+#init_control {
+    display:none;
+}
+.control {
+    padding:1rem;
+    margin:0.5rem;
+    border:solid 1px black;
+}
+
+
+
+
+
+/* 方向の装飾 */
+
+.direction_chk{
+    display:none;
+}
+
+/* ボタンの台座 */
+.direction_label {
+    display:inline-block;
+    position:relative;
+    width:6rem;
+    height:2rem;
+    margin:0.25rem;
+    background:#444;
+    transition:0.2s;
+    cursor:pointer;
+}
+
+/* ボタンのつまみ */
+.direction_label::before {
+    content:"0°";
+    font-weight:bold;
+    color:white;
+    position:absolute;
+    top:0;
+    left:0;
+    width:50%;
+    height:100%;
+    background:forestgreen;
+    transition:0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input[type="checkbox"].direction_chk:checked + .direction_label::before {
+    content:"45°";
+    font-weight:bold;
+    left:50%;
+    background:crimson;
+}
+
+
+

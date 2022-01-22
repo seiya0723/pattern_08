@@ -1,0 +1,72 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+
+{% block extra_head %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="{% static 'shop/js/script.js' %}"></script>
+<script src="{% static 'shop/js/ajax.js' %}"></script>
+{% endblock %}
+
+{% block main_area %}
+<main class="container">
+
+    <!--原本であるこのフォームをformタグに入れてしまうと、これもAjax実行時に送信されてしまうので、formタグの外に出す。-->
+    <div id="init_control" class="control">
+        <div>色: <input class="color" type="color" name="color"></div>
+        <div>本数: <input class="number" type="range" name="number" min="1" max="10" step="1" value="1">
+                   <input class="number" type="number" min="1" max="10" step="1" value="1"></div>
+        <input class="btn btn-danger control_delete" type="button" value="削除">
+    </div>
+
+    <form id="pattern_form" action="" method="POST">
+        {% csrf_token %}
+
+        {# ↓action="" なので、編集中はpkにidが入るため、それを利用すれば編集対象のIDは指定する必要はない #}
+        <!--
+        編集する時は、編集対象のIDをここに
+        <input type="hidden" name="" value="{{ pattern.id }}">
+        -->
+
+        <div class="row my-4">
+
+            <div class="col-sm-6">
+                <div>コントローラ</div>
+
+                <div id="control_area">
+                    {% for recipe in recipes %}
+                    <div class="control">
+                        {{ recipe.id }}
+                        <div>色: <input class="color" type="color" name="color" value="{{ recipe.color }}"></div>
+                        <div>本数: <input class="number" type="range" name="number" min="1" max="10" step="1" value="{{ recipe.number }}">
+                                   <input class="number" type="number" min="1" max="10" step="1" value="{{ recipe.number }}"></div>
+                        <input class="btn btn-danger control_delete" type="button" value="削除">
+                    </div>
+                    {% endfor %}
+                </div>
+                <div>糸の太さ: <input class="size" type="range" name="size" min="1" max="10" step="1" value="{% if pattern.size %}{{ pattern.size }}{% else %}1{% endif %}">
+                               <input class="size" type="number" min="1" max="10" step="1" value="{% if pattern.size %}{{ pattern.size }}{% else %}1{% endif %}"></div>
+                <div>方向: <input id="direction" class="direction_chk" type="checkbox"><label class="direction_label" for="direction"></label></div>
+                <input id="control_add" class="btn btn-success" type="button" value="追加">
+            </div>
+            <div class="col-sm-6">
+                <div>プレビュー</div>
+                <canvas id="canvas" width="300" height="300" style="border:solid 1px black;"></canvas>
+            </div>
+
+
+            <input class="form-control" type="text" name="title" placeholder="模様のタイトルを指定してください" value="{{ pattern.title }}">
+            <!--TODO:ここはtype="submit"にすると普通のフォーム送信が始まる。Ajaxで送信する為にtype="button"にする。-->
+
+            {% if recipes %}
+            <input id="pattern_mod_submit" type="button" value="編集"> 
+            {% else %}
+            <input id="pattern_submit" type="button" value="新規作成"> 
+            {% endif %}
+
+
+        </div>
+    </form>
+</main>
+{% endblock %}
+
